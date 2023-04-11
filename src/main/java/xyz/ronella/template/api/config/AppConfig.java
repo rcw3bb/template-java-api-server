@@ -7,6 +7,7 @@ import xyz.ronella.trivial.handy.PathFinder;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
@@ -43,12 +44,21 @@ final public class AppConfig {
         }
     }
 
+    private String getPropString(final String key) {
+        try {
+            return prop.getString(key);
+        }
+        catch (MissingResourceException mre) {
+            return "";
+        }
+    }
+
     /**
      * Reads the value of the server.port.
      * @return The value of the server.port as integer.
      */
     public int getServerPort() {
-        final var port = prop.getString("server.port");
+        final var port = getPropString("server.port");
         return Integer.parseInt(port);
     }
 
@@ -57,6 +67,6 @@ final public class AppConfig {
      * @return The value of the base.url.
      */
     public String getBaseURL() {
-        return prop.getString("base.url").trim();
+        return getPropString("base.url").trim();
     }
 }
