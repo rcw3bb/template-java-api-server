@@ -87,6 +87,9 @@ task preparePackage(group: 'build') {
         def jlinkBinDir = Paths.get(jlinkTargetDir.toFile().absolutePath, "bin")
         def jlinkConfDir = Paths.get(jlinkBinDir.toFile().absolutePath, "..", confDirectory)
 
+        def log4jFile = "log4j2.xml"
+        def log4jPath = Paths.get(jlinkConfDir.toFile().absolutePath, log4jFile).toFile()
+
         def mainResources = sourceSets.main.resources.sourceDirectories.asPath
 
         copy {
@@ -112,6 +115,16 @@ task preparePackage(group: 'build') {
             def updatedContent = content.replace(pattern, replaceWith)
             if (content != updatedContent) {
                 batchPath.write(updatedContent)
+            }
+        }
+
+        if (log4jPath.exists()) {
+            def pattern = "logs/"
+            def replaceWith = "../${pattern}"
+            def content = log4jPath.text
+            def updatedContent = content.replace(pattern, replaceWith)
+            if (content != updatedContent) {
+                log4jPath.write(updatedContent)
             }
         }
     }
