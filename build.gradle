@@ -1,4 +1,6 @@
 import java.nio.file.Paths
+import org.apache.tools.ant.filters.ReplaceTokens
+import java.text.SimpleDateFormat
 
 plugins {
     id 'application'
@@ -43,6 +45,14 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
 }
 
+ext {
+    FILTER_TOKEN = [
+            'project.name': project.name
+            ,'app.version' : version
+            ,'build.date' : new SimpleDateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(new Date())
+    ]
+}
+
 application {
     mainModule = moduleName
     mainClass = 'xyz.ronella.template.api.Application'
@@ -70,6 +80,10 @@ jlink {
     }
     forceMerge('slf4j-api', 'log4j-api', 'jackson-annotations')
     imageName = "${project.name}-${version}"
+}
+
+processResources {
+    filter(ReplaceTokens, tokens : FILTER_TOKEN)
 }
 
 test {

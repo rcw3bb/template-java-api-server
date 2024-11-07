@@ -3,6 +3,7 @@ package xyz.ronella.template.api;
 import org.slf4j.LoggerFactory;
 import xyz.ronella.logging.LoggerPlus;
 import xyz.ronella.template.api.config.AppConfig;
+import xyz.ronella.template.api.util.AppInfo;
 import xyz.ronella.template.api.wrapper.SimpleHttpServer;
 
 import java.io.IOException;
@@ -26,15 +27,16 @@ public final class Application {
      */
     public static void main(String ... args) throws IOException {
         try(var mLOG = LOGGER_PLUS.groupLog("void main(String[])")) {
-            final var server = SimpleHttpServer.createServer();
-            final var port = AppConfig.INSTANCE.getServerPort();
+            final var appInfo = AppInfo.INSTANCE;
+            mLOG.info("%s v%s (%s)", appInfo.getAppName(), appInfo.getAppVersion(), appInfo.getBuildDate());
 
-            server.start();
+            try(final var server = SimpleHttpServer.createServer()) {
+                server.start();
+                final var port = AppConfig.INSTANCE.getServerPort();
 
-            mLOG.info("\nThe app started on port " + port + "\nPress enter to stop...\n");
-            System.in.read();
-
-            server.stop();
+                mLOG.info("%nThe app started on port %s%nPress enter to stop...%n", port);
+                System.in.read();
+            }
         }
     }
 }
