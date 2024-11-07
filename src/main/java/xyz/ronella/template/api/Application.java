@@ -13,7 +13,9 @@ import java.io.IOException;
  * @author Ron Webb
  * @since 1.0.0
  */
-public class Application {
+public final class Application {
+
+    private Application() {}
 
     private static final LoggerPlus LOGGER_PLUS = new LoggerPlus(LoggerFactory.getLogger(Application.class));
 

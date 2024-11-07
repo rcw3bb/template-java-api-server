@@ -60,7 +60,7 @@ class SimpleHttpServerTest {
     public void createAPerson() throws IOException, InterruptedException {
         final var client = HttpClient.newHttpClient();
         final var request = HttpRequest.newBuilder(URI.create("http://localhost:8080/person"))
-                .header("Content-Type", ContentType.APPLICATION_JSON.toString())
+                .header("Content-Type", ContentType.APP_JSON.toString())
                 .POST(HttpRequest.BodyPublishers.ofString("""
                     {
                         "firstName": "Test2",
@@ -79,7 +79,7 @@ class SimpleHttpServerTest {
     public void updateAPerson() throws IOException, InterruptedException {
         final var client = HttpClient.newHttpClient();
         final var request = HttpRequest.newBuilder(URI.create("http://localhost:8080/person"))
-                .header("Content-Type", ContentType.APPLICATION_JSON.toString())
+                .header("Content-Type", ContentType.APP_JSON.toString())
                 .PUT(HttpRequest.BodyPublishers.ofString("""
                     {
                         "id": 3,
@@ -110,7 +110,7 @@ class SimpleHttpServerTest {
     public void updateAPersonNonExisting() throws IOException, InterruptedException {
         final var client = HttpClient.newHttpClient();
         final var request = HttpRequest.newBuilder(URI.create("http://localhost:8080/person"))
-                .header("Content-Type", ContentType.APPLICATION_JSON.toString())
+                .header("Content-Type", ContentType.APP_JSON.toString())
                 .PUT(HttpRequest.BodyPublishers.ofString("""
                     {
                         "id": 3,

@@ -2,7 +2,7 @@ package xyz.ronella.template.api.controller.impl;
 
 import xyz.ronella.template.api.wrapper.SimpleHttpExchange;
 
-import static xyz.ronella.template.api.commons.ContentType.APPLICATION_JSON;
+import static xyz.ronella.template.api.commons.ContentType.APP_JSON;
 import static xyz.ronella.template.api.commons.Method.*;
 
 /**
@@ -30,7 +30,7 @@ public class PersonCreate extends AbstractPersonResource {
         final var method = simpleExchange.getRequestMethod().orElse(GET);
         final var contentType = simpleExchange.getRequestContentType();
 
-        return super.canProcess(simpleExchange) && POST.equals(method) && APPLICATION_JSON.equals(contentType.get());
+        return super.canProcess(simpleExchange) && POST.equals(method) && APP_JSON.equals(contentType.get());
     }
 
     /**

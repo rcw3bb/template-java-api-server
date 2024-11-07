@@ -5,7 +5,7 @@ import xyz.ronella.template.api.wrapper.SimpleHttpExchange;
 
 import java.util.Optional;
 
-import static xyz.ronella.template.api.commons.ContentType.APPLICATION_JSON;
+import static xyz.ronella.template.api.commons.ContentType.APP_JSON;
 import static xyz.ronella.template.api.commons.Method.*;
 
 /**
@@ -33,7 +33,7 @@ public class PersonUpdateById extends AbstractPersonResource {
         final var method = simpleExchange.getRequestMethod().orElse(GET);
         final var contentType = simpleExchange.getRequestContentType();
 
-        return super.canProcess(simpleExchange) && PUT.equals(method) && APPLICATION_JSON.equals(contentType.get());
+        return super.canProcess(simpleExchange) && PUT.equals(method) && APP_JSON.equals(contentType.get());
     }
 
     /**

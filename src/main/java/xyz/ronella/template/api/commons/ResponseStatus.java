@@ -1,75 +1,100 @@
 package xyz.ronella.template.api.commons;
 
+import lombok.Getter;
+
+/**
+ * Enum representing HTTP response statuses and their corresponding status codes.
+ * Each constant in this enum represents a specific HTTP response status as defined
+ * in the HTTP/1.1 and HTTP/2 specifications.
+ *
+ * Note: Enum names are abbreviated to be within 17 characters.
+ *
+ * @author Ron Webb
+ * @since 1.0.0
+ */
+@Getter
 public enum ResponseStatus {
+
+    // 1xx Informational
     CONTINUE(100),
-    SWITCHING_PRODTOCOLS(101),
+    SWITCHING_PROTO(101),
     PROCESSING(102),
     EARLY_HINTS(103),
+
+    // 2xx Success
     OK(200),
     CREATED(201),
     ACCEPTED(202),
-    NON_AUTHORITATIVE_INFORMATION(203),
+    NON_AUTH_INFO(203),
     NO_CONTENT(204),
     RESET_CONTENT(205),
     PARTIAL_CONTENT(206),
-    MULTIPLE_STATUS(207),
+    MULTI_STATUS(207),
     ALREADY_REPORTED(208),
     IM_USED(226),
-    MULTIPLE_CHOICES(300),
-    MOVED_PERMANENTLY(301),
+
+    // 3xx Redirection
+    MULTI_CHOICES(300),
+    MOVED_PERM(301),
     FOUND(302),
     SEE_OTHER(303),
     NOT_MODIFIED(304),
     USE_PROXY(305),
-    TEMPORARY_REDIRECT(307),
-    PERMANENT_REDIRECT(308),
+    TEMP_REDIRECT(307),
+    PERM_REDIRECT(308),
+
+    // 4xx Client Error
     BAD_REQUEST(400),
     UNAUTHORIZED(401),
-    PAYMENT_REQUIRED(402),
+    PAYMENT_REQ(402),
     FORBIDDEN(403),
     NOT_FOUND(404),
-    METHOD_NOT_ALLOWED(405),
+    METHOD_NOT_ALLOWD(405),
     NOT_ACCEPTABLE(406),
-    PROXY_AUTHENTICATION_REQUIRED(407),
-    REQUEST_TIMEOUT(408),
+    PROXY_AUTH_REQ(407),
+    REQ_TIMEOUT(408),
     CONFLICT(409),
     GONE(410),
-    LENGTH_REQUIRED(411),
-    PRECONDITION_FAILED(412),
+    LENGTH_REQ(411),
+    PRECOND_FAILED(412),
     PAYLOAD_TOO_LARGE(413),
     URI_TOO_LONG(414),
-    UNSUPPORTED_MEDIA_TYPE(415),
-    RANGE_NOT_SATISFIABLE(416),
-    EXPECTATION_FAILED(417),
-    MIS_DIRECTED_REQUEST(421),
-    UNPROCESSABLE_ENTITY(422),
+    UNSUPP_MEDIA_TYPE(415),
+    RANGE_NOT_SAT(416),
+    EXPECT_FAILED(417),
+    MISDIR_REQ(421),
+    UNPROC_ENTITY(422),
     LOCKED(423),
-    FAILED_DEPENDENCY(424),
+    FAILED_DEP(424),
     TOO_EARLY(425),
-    UPGRADE_REQUIRED(426),
-    PRECONDITION_REQUIRED(428),
-    TOO_MANY_REQUESTS(429),
-    REQUEST_HEADER_FIELDS_TOO_LARGE(431),
-    UNAVAILABLE_FOR_LEGAL_REASONS(451),
-    INTERNAL_SERVER_ERROR(500),
-    NOT_IMPLEMENTED(501),
+    UPGRADE_REQ(426),
+    PRECOND_REQ(428),
+    TOO_MANY_REQ(429),
+    REQ_HDRS_TOO_LG(431),
+    UNAVAIL_LEGAL(451),
+
+    // 5xx Server Error
+    INT_SERVER_ERR(500),
+    NOT_IMPL(501),
     BAD_GATEWAY(502),
-    SERVICE_UNAVAILABLE(503),
+    SERVICE_UNAVAIL(503),
     GATEWAY_TIMEOUT(504),
-    HTTP_VERSION_NOT_SUPPORTED(505),
-    VARIANT_ALSO_NEGOTIATES(506),
-    INSUFFICIENT_STORAGE(507),
+    HTTP_VER_NOT_SUPP(505),
+    VARIANT_NEG(506),
+    INSUFF_STORAGE(507),
     LOOP_DETECTED(508),
     NOT_EXTENDED(510),
-    NETWORK_AUTHENTICATION_REQUIRED(511);
+    NET_AUTH_REQ(511);
 
     private final int code;
 
+    /**
+     * Constructor to create a response status with a specific HTTP status code.
+     *
+     * @param code the HTTP status code for this response status.
+     */
     ResponseStatus(final int code) {
         this.code = code;
     }
 
-    public int getCode() {
-        return code;
-    }
 }
