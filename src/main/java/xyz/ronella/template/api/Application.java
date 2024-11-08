@@ -4,7 +4,9 @@ import org.slf4j.LoggerFactory;
 import xyz.ronella.logging.LoggerPlus;
 import xyz.ronella.template.api.config.AppConfig;
 import xyz.ronella.template.api.util.AppInfo;
+import xyz.ronella.template.api.util.FileMgr;
 import xyz.ronella.template.api.wrapper.SimpleHttpServer;
+import xyz.ronella.trivial.handy.PathFinder;
 
 import java.io.IOException;
 
@@ -15,6 +17,22 @@ import java.io.IOException;
  * @since 1.0.0
  */
 public final class Application {
+
+    static {
+        final var confDir = FileMgr.getConfDir();
+        confDir.ifPresent(___confDir -> {
+            final var logPath = PathFinder.getBuilder("logback.xml")
+                    .addPaths(".", ___confDir.getAbsolutePath())
+                    .build();
+            final var optLogFile = logPath.getFile();
+            if (optLogFile.isPresent()) {
+                final var logFile = optLogFile.get();
+                if (logFile.exists()) {
+                    System.setProperty("logback.configurationFile", logFile.getAbsolutePath());
+                }
+            }
+        });
+    }
 
     private Application() {}
 

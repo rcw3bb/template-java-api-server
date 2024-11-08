@@ -10,6 +10,7 @@ lombok-version = { require = "latest.release" }
 module-plugin-version = { require = "latest.release" }
 jlink-version = { require = "latest.release" }
 snyk-version = { require = "latest.release" }
+shadow-version = { require = "latest.release"}
 
 # Use version 5.0.1 for guice to use the gradle application:run task
 guice-version = { require = "latest.release" }
@@ -30,4 +31,5 @@ logger = ["slf4j-api", "logback-classic", "logger-plus"]
 [plugins]
 moduleplugin = { id = "org.javamodularity.moduleplugin", version.ref = "module-plugin-version" }
 jlink = { id = "org.beryx.jlink", version.ref = "jlink-version" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow-version" }
 snyk = { id = "io.snyk.gradle.plugin.snykplugin", version.ref = "snyk-version" }

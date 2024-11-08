@@ -1,3 +1,5 @@
+import xyz.ronella.trivial.handy.CommandLocator
+
 import java.nio.file.Paths
 import org.apache.tools.ant.filters.ReplaceTokens
 import java.text.SimpleDateFormat
@@ -6,8 +8,11 @@ buildscript {
     configurations.classpath {
         resolutionStrategy.activateDependencyLocking()
     }
-}
 
+    dependencies {
+        classpath libs.trivial.chunk
+    }
+}
 
 plugins {
     id 'application'
@@ -16,6 +21,7 @@ plugins {
 
     alias(libs.plugins.moduleplugin)
     alias(libs.plugins.jlink)
+    alias(libs.plugins.shadow)
     alias(libs.plugins.snyk)
 }
 
@@ -49,6 +55,7 @@ dependencies {
 }
 
 ext {
+    packageName = "${project.name}-${version}"
     FILTER_TOKEN = [
             'project.name': project.name
             ,'app.version' : version
@@ -59,6 +66,13 @@ ext {
 application {
     mainModule = moduleName
     mainClass = 'xyz.ronella.template.api.Application'
+}
+
+shadowJar {
+    archiveClassifier.set("fat")
+    minimize {
+        exclude(dependency('ch.qos.logback:.*:.*'))
+    }
 }
 
 java {
@@ -86,6 +100,26 @@ test {
     finalizedBy(jacocoTestReport)
     useJUnitPlatform()
 }
+
+run {
+    standardInput = System.in
+}
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+pmd {
+    consoleOutput = true
+    toolVersion = "7.7.0"
+    rulesMinimumPriority = 5
+    ruleSetFiles = files('quality/pmd/java/custom.xml')
+    ruleSets = []
+}
+
+pmdTest.enabled = false
 
 task preparePackage(group: 'build') {
     doLast {
@@ -158,22 +192,37 @@ task packWin(group: 'distribution', dependsOn: ['jlink']) {
     }
 }
 
-run {
-    standardInput = System.in
-}
-
-javadoc {
-    if(JavaVersion.current().isJava9Compatible()) {
-        options.addBooleanOption('html5', true)
+task packImage(group: 'distribution', dependsOn: ['buildExec']) {
+    doLast {
+        def imageOutputDir = Paths.get(buildDir.absolutePath, 'image')
+        def outputFile = Paths.get(buildDir.absolutePath, 'pack', "${packageName}-image.zip")
+        ant.zip(destfile: outputFile) {
+            fileset(dir: imageOutputDir)
+        }
     }
 }
 
-pmd {
-    consoleOutput = true
-    toolVersion = "7.7.0"
-    rulesMinimumPriority = 5
-    ruleSetFiles = files('quality/pmd/java/custom.xml')
-    ruleSets = []
-}
+task buildExec(group: 'build', dependsOn: [shadowJar]) {
+    def imageDir = Paths.get(buildDir.absolutePath, 'image').toFile()
 
-pmdTest.enabled = false
+    doFirst {
+        if (!imageDir.exists()) {
+            imageDir.mkdirs()
+        }
+    }
+
+    doLast {
+        exec {
+            def nativeExec = CommandLocator.locateAsString("native-image")
+            def libsDir = Paths.get(buildDir.absolutePath, 'libs').toFile().absolutePath
+            def fatJar = Paths.get(libsDir, "${packageName}-fat.jar").toFile().absolutePath
+            def outputFile = Paths.get(imageDir.absolutePath, "${project.name}").toFile().absolutePath
+            commandLine nativeExec.get(), '--no-fallback', '-jar', fatJar, '-o', outputFile
+        }
+        copy {
+            from(Paths.get(buildDir.absolutePath, "resources", "main"))
+            into(Paths.get(imageDir.absolutePath, "conf"))
+            include 'logback.xml'
+        }
+    }
+}
