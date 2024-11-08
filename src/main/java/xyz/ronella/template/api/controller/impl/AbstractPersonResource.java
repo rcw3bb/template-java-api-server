@@ -2,9 +2,10 @@ package xyz.ronella.template.api.controller.impl;
 
 import xyz.ronella.template.api.config.AppConfig;
 import xyz.ronella.template.api.controller.IResource;
-import xyz.ronella.template.api.config.PersonModule;
 import xyz.ronella.template.api.model.Person;
+import xyz.ronella.template.api.repository.impl.PersonListRepository;
 import xyz.ronella.template.api.service.IPersonService;
+import xyz.ronella.template.api.service.impl.PersonServiceImpl;
 import xyz.ronella.template.api.wrapper.SimpleHttpExchange;
 
 import xyz.ronella.template.api.wrapper.SimpleJson;
@@ -43,7 +44,7 @@ public abstract class AbstractPersonResource implements IResource {
      * The default constructor that must be called from the subclass.
      */
     public AbstractPersonResource() {
-        this.personService = PersonModule.getInstance(IPersonService.class);
+        this.personService = new PersonServiceImpl(new PersonListRepository());
     }
 
     /**

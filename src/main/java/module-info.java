@@ -15,8 +15,6 @@ open module xyz.ronella.template.api {
     requires xyz.ronella.casual.trivial;
     requires xyz.ronella.logging.logger.plus;
 
-    requires com.google.guice;
-
     requires org.slf4j;
     requires ch.qos.logback.classic;
     requires java.naming;

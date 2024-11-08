@@ -39,8 +39,6 @@ dependencyLocking {
 dependencies {
 
     implementation libs.jackson.bind
-    implementation libs.guice
-    implementation libs.guava
     implementation libs.trivial.chunk
     implementation libs.bundles.logger
 

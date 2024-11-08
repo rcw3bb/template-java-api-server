@@ -1,11 +1,7 @@
 package xyz.ronella.template.api.controller.impl;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 import org.slf4j.LoggerFactory;
 import xyz.ronella.logging.LoggerPlus;
-import xyz.ronella.template.api.config.PersonModule;
 import xyz.ronella.template.api.controller.IResource;
 import xyz.ronella.template.api.controller.IResources;
 import xyz.ronella.template.api.wrapper.SimpleHttpExchange;
@@ -34,8 +30,7 @@ public class PersonResources implements IResources {
      * Creates an instance of PersonResources.
      * @param resources An set of unique implementation of IResource.
      */
-    @Inject
-    public PersonResources(@Named(RESOURCE_NAME) final Set<IResource> resources) {
+    public PersonResources(final Set<IResource> resources) {
         this.resources = resources;
     }
 
@@ -55,7 +50,13 @@ public class PersonResources implements IResources {
      */
     public static Optional<IResource> createResource(SimpleHttpExchange exchange) {
         try(var mLOG = LOGGER_PLUS.groupLog("Optional<IResource> getInstance(SimpleHttpExchange)")) {
-            final var personResource = PersonModule.getInstance(IResources.class);
+            final var personResource = new PersonResources(Set.of(
+                    new PersonCreate(),
+                    new PersonDeleteById(),
+                    new PersonRetrieveAll(),
+                    new PersonRetrieveById(),
+                    new PersonUpdateById()
+            ));
             final var resources = personResource.getResources();
             final var resource = resources.stream().filter(___resource -> ___resource.canProcess(exchange)).findFirst();
             mLOG.debug(()-> "Resource instance: " + resource.get());

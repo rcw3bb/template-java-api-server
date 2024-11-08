@@ -1,8 +1,5 @@
 package xyz.ronella.template.api.service.impl;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-import xyz.ronella.template.api.controller.impl.PersonResources;
 import xyz.ronella.template.api.model.Person;
 import xyz.ronella.template.api.repository.IPersonRepository;
 import xyz.ronella.template.api.service.IPersonService;
@@ -22,8 +19,7 @@ public class PersonServiceImpl implements IPersonService {
      * Creates an instance of PersonServiceImpl.
      * @param repository An implementation of  IPersonRepository.
      */
-    @Inject
-    public PersonServiceImpl(@Named(PersonResources.RESOURCE_NAME) final IPersonRepository repository) {
+    public PersonServiceImpl(final IPersonRepository repository) {
         this.repository = repository;
     }
 
