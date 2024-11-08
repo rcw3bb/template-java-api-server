@@ -86,7 +86,7 @@ public class SimpleHttpExchange {
                 final var contentLength = responseBytes.length;
                 final var responseCode = responseStatus.getCode();
 
-                exchange.sendResponseHeaders(responseCode, contentLength);
+                exchange.sendResponseHeaders(responseCode, contentLength==0 ? -1 : contentLength);
 
                 if (ResponseStatus.NO_CONTENT.getCode() != responseCode) {
                     try (final var os = exchange.getResponseBody()) {
