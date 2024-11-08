@@ -21,7 +21,7 @@ repositories {
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.1'
 
-    implementation('com.google.inject:guice:5.1.0') {
+    implementation('com.google.inject:guice:7.0.0') {
         exclude group: 'com.google.guava', module: 'guava'
     }
     implementation 'com.google.guava:guava:33.3.1-jre'
@@ -64,21 +64,13 @@ java {
 }
 
 jlink {
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    options = ['--strip-debug', '--compress', 'zip-9', '--no-header-files', '--no-man-pages']
     launcher{
         moduleName = application.mainModule
         mainClassName = application.mainClass
         jvmArgs = ['-Dlog4j.configurationFile={{BIN_DIR}}\\conf\\log4j2.xml']
     }
-    mergedModule {
-        additive = true
-        uses 'org.apache.logging.log4j.spi.Provider'
-        uses 'org.apache.logging.log4j.message.ThreadDumpMessage.ThreadInfoFactory'
-        uses 'org.apache.logging.log4j.core.util.ContextDataProvider'
-        uses 'org.apache.logging.log4j.util.PropertySource'
-        uses 'org.apache.logging.log4j.core.util.WatchEventService'
-    }
-    forceMerge('slf4j-api', 'log4j-api', 'jackson-annotations')
+    forceMerge('jackson-annotations')
     imageName = "${project.name}-${version}"
 }
 
