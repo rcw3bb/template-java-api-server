@@ -10,7 +10,7 @@ Since this is just a template, you can always change any the implementations tha
 
 ## Pre-requisite
 
-* Java 17
+* Java 21
 
 ## Cloning
 

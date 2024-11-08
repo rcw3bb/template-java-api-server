@@ -1,1 +1,9 @@
+dependencyResolutionManagement {
+    versionCatalogs {
+        testLibs {
+            from(files('gradle/test-libs.versions.toml'))
+        }
+    }
+}
+
 rootProject.name = 'java-api-server'
