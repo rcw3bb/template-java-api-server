@@ -17,8 +17,8 @@ open module xyz.ronella.template.api {
 
     requires com.google.guice;
 
-    requires org.apache.logging.log4j;
-    requires org.apache.logging.log4j.core;
-    requires org.apache.logging.log4j.slf4j2.impl;
+    requires org.slf4j;
+    requires ch.qos.logback.classic;
+    requires java.naming;
 
 }

@@ -29,9 +29,8 @@ dependencies {
     implementation 'xyz.ronella.casual:trivial-chunk:2.20.0'
     implementation 'xyz.ronella.logging:logger-plus:1.2.0'
 
-    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.24.1'
-    implementation 'org.apache.logging.log4j:log4j-api:2.24.1'
-    implementation 'org.apache.logging.log4j:log4j-core:2.24.1'
+    implementation 'org.slf4j:slf4j-api:2.0.13'
+    implementation 'ch.qos.logback:logback-classic:1.5.6'
 
     compileOnly 'org.projectlombok:lombok:1.18.34'
 
@@ -68,7 +67,7 @@ jlink {
     launcher{
         moduleName = application.mainModule
         mainClassName = application.mainClass
-        jvmArgs = ['-Dlog4j.configurationFile={{BIN_DIR}}\\conf\\log4j2.xml']
+        jvmArgs = ['-Dlogback.configurationFile={{BIN_DIR}}\\conf\\logback.xml']
     }
     forceMerge('jackson-annotations')
     imageName = "${project.name}-${version}"
@@ -98,8 +97,8 @@ task preparePackage(group: 'build') {
         def jlinkBinDir = Paths.get(jlinkTargetDir.toFile().absolutePath, "bin")
         def jlinkConfDir = Paths.get(jlinkBinDir.toFile().absolutePath, "..", confDirectory)
 
-        def log4jFile = "log4j2.xml"
-        def log4jPath = Paths.get(jlinkConfDir.toFile().absolutePath, log4jFile).toFile()
+        def logbackFile = "logback.xml"
+        def logbackPath = Paths.get(jlinkConfDir.toFile().absolutePath, logbackFile).toFile()
 
         def mainResources = sourceSets.main.resources.sourceDirectories.asPath
 
@@ -129,13 +128,13 @@ task preparePackage(group: 'build') {
             }
         }
 
-        if (log4jPath.exists()) {
+        if (logbackPath.exists()) {
             def pattern = "logs/"
             def replaceWith = "../${pattern}"
-            def content = log4jPath.text
+            def content = logbackPath.text
             def updatedContent = content.replace(pattern, replaceWith)
             if (content != updatedContent) {
-                log4jPath.write(updatedContent)
+                logbackPath.write(updatedContent)
             }
         }
     }
