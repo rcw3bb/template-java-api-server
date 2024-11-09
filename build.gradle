@@ -200,7 +200,6 @@ task packImage(group: 'distribution', dependsOn: ['buildExec']) {
             it.file("${packageName}-image.zip")
         }.get().asFile.toPath()
 
-        //Paths.get(buildDir.absolutePath, 'pack', "${packageName}-image.zip")
         ant.zip(destfile: outputFile) {
             fileset(dir: imageOutputDir)
         }
