@@ -2,7 +2,10 @@
 
 ## Prerequisites
 
-* Java 21
+* [BuildTools for Visual Studio](https://visualstudio.microsoft.com/downloads/)
+  * Install **Desktop development with C++**
+
+* [GraalVM for Java 21](https://www.graalvm.org/downloads/)
 
 ## Testing
 
@@ -14,55 +17,37 @@ gradlew clean check
 
 > The preceding command must be run from the location where you've cloned the repository.
 
-## Building
+## Packaging Standalone Executable
 
-Run the following command to build the application:
-
-```
-gradlew jlink
-```
-
-> The preceding command must be run from the location where you've cloned the repository.
-
-The output of this task will be in the following directory format:
+Run the following command to build the application executable:
 
 ```
-build\java-api-server-<VERSION>
+gradlew packImage
 ```
 
-From the preceding directory you can test the build by running the following batch file:
+> The package will be available in the following directory:
+>
+> ```
+> <REPO_DIR>\build\pack
+> ```
+>
+> REPO_DIR is the location where you've cloned the repository.
 
-```
-java-api-server.bat
-```
+## Packaging with Java
 
-Once started you can try to open the following address in your browser:
-
-http://localhost:8080/person
-
-Expect the following response:
-
-```json
-[{"id":1,"firstName":"Ronaldo","lastName":"Webb"},{"id":2,"firstName":"Juan","lastName":"Dela Cruz"}]
-```
-
-## Packaging
-
-Run the following command to package the application:
+Run the following command to build the application with Java runtime:
 
 ```
 gradlew packWin
 ```
 
-> The preceding command must be run from the location where you've cloned the repository.
-
-The output of this task will be in the following directory:
-
-```
-build\pack
-```
-
-The package will contain the a distributable zip file and doesn't require java to be installed on the target windows machine.
+> The package will be available in following directory:
+>
+> ```
+> <REPO_DIR>\build\pack
+> ```
+>
+> REPO_DIR is the location where you've cloned the repository.
 
 ## Locking Dependencies
 

@@ -8,23 +8,13 @@ This template is implemented as java module so that we can package it independen
 
 Since this is just a template, you can always change any the implementations that you can see here.
 
-## Pre-requisite
-
-* Java 21
-
 ## Cloning
 
 1. **Create a fork** of this repository.
 
 2. **Clone the forked repository** to your machine.
 
-3. **Test your cloned repository** using the following command:
-
-   ```
-   gradlew test
-   ```
-
-   > If it completes successfully your setup is good.
+3. **Test your cloned repository** using the procedure from [build document](BUILD.md).
 
 ## Packages
 
@@ -36,9 +26,7 @@ Contains all the common codes that can usually cross to any available packages.
 
 Must have the logic that involves configurations. 
 
-Aside from the **AppConfig class** *(i.e. more about this in **the application.properties file section**.)*, it also contains the **PersonModule class**. This class is where we should normally wires the services and respositories implementations. 
-
-The wiring is done through a **guice framework**.
+Aside from the **AppConfig class** *(i.e. more about this in **the application.properties file section**.)*, it also contains the **PersonDependencies class**. This class is where all the specific implementations must be registered.
 
 ### controller
 
@@ -72,10 +60,18 @@ The classes here **wraps all the third-party classes**. So that, the other appli
 
 The **Application class** is the bootstrap of the server. By default, the server is listening on port **8080**. You can change this by updating it in the **application.properties** file. If you are planning to run the server using IDE. This is the class to be ran.
 
-If you've packaged it and wants to run the server, execute the following batch file:
+If you've packaged it and wants to run the server, execute the following:
+
+**Packaged with Java**
 
 ```
 <APPLICATION_ROOT>\java-api-server.bat
+```
+
+**Packaged as Standalone Executable**
+
+```
+<APPLICATION_ROOT>\java-api-server.exe
 ```
 
 > The <APPLICATION_ROOT> is the location where you've extracted the package. *See the [build document](BUILD.md) on how to package the project.*
@@ -130,9 +126,9 @@ In the **actual package**, you can find this file in the following directory:
 
 > The <APPLICATION_ROOT> is the location where you've extracted the package. *See the [build document](BUILD.md) on how to package the project.*
 
-## The log4j2.xml file
+## The logback.xml file
 
-The **log4j2.xml file** holds the logging configuration and it is located in the following location:
+The **logback.xml file** holds the logging configuration and it is located in the following location:
 
 ```
 <PROJECT_DIR>\src\main\resources
