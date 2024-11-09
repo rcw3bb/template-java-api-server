@@ -2,6 +2,8 @@ package xyz.ronella.template.api.controller.impl;
 
 import org.slf4j.LoggerFactory;
 import xyz.ronella.logging.LoggerPlus;
+
+import xyz.ronella.template.api.config.PersonDependencies;
 import xyz.ronella.template.api.controller.IResource;
 import xyz.ronella.template.api.controller.IResources;
 import xyz.ronella.template.api.wrapper.SimpleHttpExchange;
@@ -50,13 +52,7 @@ public class PersonResources implements IResources {
      */
     public static Optional<IResource> createResource(SimpleHttpExchange exchange) {
         try(var mLOG = LOGGER_PLUS.groupLog("Optional<IResource> getInstance(SimpleHttpExchange)")) {
-            final var personResource = new PersonResources(Set.of(
-                    new PersonCreate(),
-                    new PersonDeleteById(),
-                    new PersonRetrieveAll(),
-                    new PersonRetrieveById(),
-                    new PersonUpdateById()
-            ));
+            final var personResource = PersonDependencies.getPersonResources();
             final var resources = personResource.getResources();
             final var resource = resources.stream().filter(___resource -> ___resource.canProcess(exchange)).findFirst();
             mLOG.debug(()-> "Resource instance: " + resource.get());
