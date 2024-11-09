@@ -25,8 +25,15 @@ public abstract class AbstractPersonResource implements IResource {
     /**
      * An instance of IPersonService.
      */
-    private IPersonService personService;
+    private final IPersonService personService;
     private Matcher pathMatcher;
+
+    /**
+     * The default constructor that must be called from the subclass.
+     */
+    public AbstractPersonResource() {
+        this.personService = new PersonServiceImpl(new PersonListRepository());
+    }
 
     public IPersonService getService() {
         return personService;
@@ -38,13 +45,6 @@ public abstract class AbstractPersonResource implements IResource {
      */
     protected String getBaseURL() {
         return AppConfig.INSTANCE.getBaseURL();
-    }
-
-    /**
-     * The default constructor that must be called from the subclass.
-     */
-    public AbstractPersonResource() {
-        this.personService = new PersonServiceImpl(new PersonListRepository());
     }
 
     /**
