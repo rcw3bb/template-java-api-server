@@ -93,7 +93,7 @@ Expect to see the following output:
 [{"id":1,"firstName":"Ronaldo","lastName":"Webb"},{"id":2,"firstName":"Juan","lastName":"Dela Cruz"}]
 ```
 
-If you want to **stop the server**, just **press any key**.
+If you want to **stop the server**, just **press enter key**.
 
 ## The application.properties file
 
