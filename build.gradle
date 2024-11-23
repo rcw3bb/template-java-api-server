@@ -152,6 +152,8 @@ task preparePackage(group: 'build') {
         copy {
             from(mainResources)
             into(jlinkConfDir)
+            filter(ReplaceTokens, tokens : FILTER_TOKEN)
+            exclude('app-info.properties')
         }
 
         if (batchPath.exists()) {
