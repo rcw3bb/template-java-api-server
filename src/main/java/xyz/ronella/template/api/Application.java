@@ -4,7 +4,6 @@ import org.slf4j.LoggerFactory;
 import xyz.ronella.logging.LoggerPlus;
 import xyz.ronella.template.api.config.AppConfig;
 import xyz.ronella.template.api.util.AppInfo;
-import xyz.ronella.template.api.util.FileMgr;
 import xyz.ronella.template.api.wrapper.SimpleHttpServer;
 import xyz.ronella.trivial.handy.PathFinder;
 
@@ -19,19 +18,20 @@ import java.io.IOException;
 public final class Application {
 
     static {
-        final var confDir = FileMgr.getConfDir();
-        confDir.ifPresent(___confDir -> {
-            final var logPath = PathFinder.getBuilder("logback.xml")
-                    .addPaths(".", ___confDir.getAbsolutePath())
-                    .build();
-            final var optLogFile = logPath.getFile();
-            if (optLogFile.isPresent()) {
-                final var logFile = optLogFile.get();
-                if (logFile.exists()) {
-                    System.setProperty("logback.configurationFile", logFile.getAbsolutePath());
-                }
-            }
-        });
+        final var userDir = "user.dir";
+        final var confDir = System.getProperty(userDir) + "/conf";
+        final var logPath = PathFinder.getBuilder("logback.xml")
+                .addSysProps(userDir)
+                .addPaths(confDir, "..", "../conf")
+                .build();
+        final var optLogFile = logPath.getFile();
+
+        if (optLogFile.isPresent()) {
+            final var logSysProp = "logback.configurationFile";
+            final var logFile = optLogFile.get().getAbsolutePath();
+            System.out.printf("%s: %s%n", logSysProp, logFile);
+            System.setProperty(logSysProp, logFile);
+        }
     }
 
     private Application() {}
@@ -46,13 +46,19 @@ public final class Application {
     public static void main(String ... args) throws IOException {
         try(var mLOG = LOGGER_PLUS.groupLog("void main(String[])")) {
             final var appInfo = AppInfo.INSTANCE;
-            mLOG.info("%s v%s (%s)", appInfo.getAppName(), appInfo.getAppVersion(), appInfo.getBuildDate());
+            final var header = String.format("%s v%s (%s)"
+                    , appInfo.getAppName()
+                    , appInfo.getAppVersion()
+                    , appInfo.getBuildDate()
+            );
+            mLOG.info(header);
+            mLOG.info("Working Directory: %s", System.getProperty("user.dir"));
 
             try(final var server = SimpleHttpServer.createServer()) {
-                server.start();
                 final var port = AppConfig.INSTANCE.getServerPort();
 
-                mLOG.info("%nThe app started on port %s%nPress enter to stop...%n", port);
+                server.start();
+                mLOG.info("%nThe app started on port %s%nPress <ENTER> to stop...", port);
                 System.in.read();
             }
         }
