@@ -10,6 +10,7 @@ module-plugin-version = { require = "latest.release" }
 jlink-version = { require = "latest.release" }
 #snyk-version = { require = "latest.release" }
 shadow-version = { require = "latest.release"}
+pmd-version = { require = "latest.release" }
 
 [libraries]
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api-version" }
@@ -18,6 +19,7 @@ logger-plus = { module = "xyz.ronella.logging:logger-plus", version.ref = "logge
 trivial-chunk = { module = "xyz.ronella.casual:trivial-chunk", version.ref = "trivial-chunk-version" }
 jackson-bind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok-version" }
+pmd = { module = "net.sourceforge.pmd:pmd", version.ref = "pmd-version" }
 
 [bundles]
 logger = ["slf4j-api", "logback-classic", "logger-plus"]
